@@ -7,12 +7,15 @@ name = "pypi"
 
 [packages]
 
-connexion = "*"
+connexion = {extras = ["swagger-ui"]}
 flask-cors = "*"
 
 
 [dev-packages]
 
+pytest = "*"
+pylint = "*"
+"flake8" = "*"
 
 
 [requires]
