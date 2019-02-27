@@ -1,0 +1,163 @@
+openapi: "3.0.0"
+info:
+  description: "alex central node API"
+  version: "0.0.1"
+  title: "alex-central-node"
+  termsOfService: "http://swagger.io/terms/"
+  license:
+    name: "GPLv2"
+    url: "https://www.gnu.org/licenses/gpl-2.0.en.html"
+
+servers:
+  - url: /api/v1
+    description: "The APIs base path"
+
+tags:
+- name: "data-source"
+  description: "Data-Source related APIs"
+
+paths:
+  /request:
+    post:
+      tags:
+      - "input"
+      summary: "Intent-input"
+      description: ""
+      operationId: "api.input.intentInput"
+      requestBody:
+        description: "User intent"
+        content:
+          application/json:
+            schema:
+              required:
+                - "skill"
+                - "payload"
+                - "user_handle"
+                - "input_service"
+              properties:
+                skill:
+                  type: "string"
+                user_handle:
+                  type: "string"
+                input_service:
+                  type: "string"
+                payload:
+                  type: "object"
+
+      responses:
+        204:
+          description: "Success"
+
+  /preferences/user/{userId}:
+    parameters:
+      - in: "path"
+        name: "userId"
+        required: true
+        schema:
+          $ref: "#/components/schemas/userId"
+        description: "The id of the user"
+    get:
+      tags:
+      - "data-source"
+      summary: "Get user preferences"
+      description: ""
+      operationId: "api.preferences.getUserPreferences"
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userPreferences"
+    patch:
+      tags:
+      - "skill"
+      summary: "Update some user-preferences"
+      description: ""
+      operationId: "api.preferences.patchUserPreferences"
+      responses:
+        204:
+          description: "Success"
+
+  /preferences/global:
+    get:
+      tags:
+      - "data-source"
+      summary: "Get global preferences"
+      description: ""
+      operationId: "api.preferences.getGlobalPreferences"
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/globalPreferences"
+    patch:
+      tags:
+      - "skill"
+      summary: "Update some global-preferences"
+      description: ""
+      operationId: "api.preferences.patchGlobalPreferences"
+      responses:
+        204:
+          description: "Success"
+
+  /information:
+    get:
+      tags:
+      - "data-source"
+      - "skill"
+      summary: "Get all information"
+      description: "There are meny informations in this entpoint"
+      operationId: "api.information.getAllInfo"
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/information"
+    patch:
+      tags:
+      - "data-source"
+      summary: "Update some information"
+      description: ""
+      operationId: "api.information.patchInfo"
+      responses:
+        204:
+          description: "Success"
+
+
+components:
+
+  schemas:
+    userId:
+      type: "string"
+      format: "uuid"
+      example: "0693d37c-404a-423c-b802-424341ff087b"
+
+    information:
+      required:
+        - "user"
+        - "global"
+      properties:
+        user:
+          type: "object"
+        global:
+          $ref: "#/components/schemas/globalInformation"
+
+    globalInformation:
+      type: "object"
+
+    userPreferences:
+      type: "object"
+      description: "Object of key-value preferences. Paths nested using dots in keys."
+
+    globalPreferences:
+      type: "object"
+      description: "Object of key-value preferences. Paths nested using dots in keys."
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
