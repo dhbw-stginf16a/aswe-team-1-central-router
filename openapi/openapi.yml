@@ -159,6 +159,19 @@ paths:
       responses:
         204:
           description: "Success"
+    get:
+      tags:
+      - "skill"
+      summary: "Get a list of registred skills"
+      description: ""
+      operationId: "api.skill.getSkills"
+      responses:
+        200:
+          description: 'Array of skill names'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/skillList"
 
 components:
   schemas:
@@ -187,6 +200,12 @@ components:
     globalPreferences:
       type: "object"
       description: "Object of key-value preferences. Paths nested using dots in keys."
+
+    skillList:
+      type: "array"
+      items:
+        type: "string"
+        example: "Calendar"
 
 externalDocs:
   description: "Find out more about Swagger"

@@ -15,3 +15,9 @@ class TestSkill(TestConnexion):
         response = client.post('/api/v1/skill', json=skill)
 
         assert response.status_code == 204
+
+    def test_getSkill(self, client):
+        response = client.get('/api/v1/skill')
+
+        assert response.status_code == 200
+        assert response.get_json() == ['Calendar']
