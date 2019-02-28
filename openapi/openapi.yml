@@ -134,9 +134,33 @@ paths:
         204:
           description: "Success"
 
+  /skill:
+    post:
+      tags:
+      - "skill"
+      summary: "Registers a skill to the api"
+      description: ""
+      operationId: "api.skill.registerSkill"
+      requestBody:
+        description: "SKill description"
+        content:
+          application/json:
+            schema:
+              required:
+                - "name"
+                - "endpoint"
+              properties:
+                name:
+                  type: "string"
+                  example: "Calendar"
+                endpoint:
+                  type: "string"
+                  example: "https://calendarapi.service/api/v1"
+      responses:
+        204:
+          description: "Success"
 
 components:
-
   schemas:
     userId:
       type: "string"

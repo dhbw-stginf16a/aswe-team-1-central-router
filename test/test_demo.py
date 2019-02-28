@@ -7,5 +7,5 @@ from .TestConnexion import TestConnexion
 class TestDemo(TestConnexion):
     """A demo test without real purpose
     """
-    def test_example(client):
+    def test_example(self, client):
         assert True
