@@ -9,6 +9,7 @@ name = "pypi"
 
 connexion = {extras = ["swagger-ui"]}
 flask-cors = "*"
+gunicorn = "*"
 
 
 [dev-packages]
@@ -16,6 +17,7 @@ flask-cors = "*"
 pytest = "*"
 pylint = "*"
 "flake8" = "*"
+coverage = "*"
 
 
 [requires]
