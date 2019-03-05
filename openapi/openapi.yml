@@ -45,7 +45,7 @@ paths:
                   type: "object"
 
       responses:
-        204:
+        200:
           description: "Success"
 
   /preferences/user/{userId}:
@@ -109,30 +109,89 @@ paths:
         204:
           description: "Success"
 
-  /information:
+  /monitoring:
+    post:
+      tags:
+      - "monitoring"
+      summary: "Registers a monitoring entity to the api"
+      description: ""
+      operationId: "api.monitor.registerMonitor"
+      requestBody:
+        description: "Monitoring entity description"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/monitor"
+      responses:
+        204:
+          description: "Success"
     get:
       tags:
-      - "data-source"
-      - "skill"
-      summary: "Get all information"
-      description: "There are meny informations in this entpoint"
-      operationId: "api.information.getAllInfo"
+      - "monitoring"
+      summary: "Get a list of registred monitoring entities"
+      description: ""
+      operationId: "api.monitor.getMonitor"
+      responses:
+        200:
+          description: 'Array of monitoring entities'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/monitorList"
+
+  /monitoring/{concern}:
+    parameters:
+      - in: "path"
+        name: "concern"
+        required: true
+        schema:
+          $ref: "#/components/schemas/concern"
+        description: "The name of a concern"
+    post:
+      tags:
+      - "monitoring"
+      summary: "Get dynamic information from a monitoring entity"
+      description: ""
+      operationId: "api.monitor.dynamicPull"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/monitorPayload"
       responses:
         200:
           description: "Success"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/information"
-    patch:
+                $ref: "#/components/schemas/monitorPayload"
+
+  /monitoring/event/{concern}:
+    parameters:
+      - in: "path"
+        name: "concern"
+        required: true
+        schema:
+          $ref: "#/components/schemas/concern"
+        description: "The id of a concern"
+    post:
       tags:
-      - "data-source"
-      summary: "Update some information"
+      - "monitoring"
+      summary: "Push dynamic changes to the api"
       description: ""
-      operationId: "api.information.patchInfo"
+      operationId: "api.monitor.handleEvent"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/monitorPayload"
       responses:
-        204:
+        200:
           description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/monitorPayload"
 
   /skill:
     post:
@@ -180,19 +239,6 @@ components:
       format: "uuid"
       example: "0693d37c-404a-423c-b802-424341ff087b"
 
-    information:
-      required:
-        - "user"
-        - "global"
-      properties:
-        user:
-          type: "object"
-        global:
-          $ref: "#/components/schemas/globalInformation"
-
-    globalInformation:
-      type: "object"
-
     userPreferences:
       type: "object"
       description: "Object of key-value preferences. Paths nested using dots in keys."
@@ -205,7 +251,46 @@ components:
       type: "array"
       items:
         type: "string"
+        example: "RouteCalculator"
+
+    monitorPayload:
+      required:
+       - "type"
+       - "payload"
+      properties:
+        type:
+          type: "string"
+          example: "current_weather"
+        payload:
+          type: "object"
+
+    monitorList:
+      type: "array"
+      items:
+        type: "string"
         example: "Calendar"
+
+    concern:
+      type: "string"
+      format: "weather"
+
+    monitor:
+      required:
+        - "concern"
+        - "endpoint"
+        - "types"
+      properties:
+        concern:
+          type: "string"
+          example: "Calendar"
+        endpoint:
+          type: "string"
+          example: "https://calendarapi.service/api/v1"
+        types:
+          type: 'array'
+          items:
+            type: "string"
+            example: "weather_change"
 
 externalDocs:
   description: "Find out more about Swagger"
