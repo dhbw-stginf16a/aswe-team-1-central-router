@@ -1,297 +1,294 @@
-openapi: "3.0.0"
+openapi: 3.0.0
 info:
-  description: "alex central node API"
-  version: "0.0.1"
-  title: "alex-central-node"
-  termsOfService: "http://swagger.io/terms/"
+  description: alex central node API
+  version: 0.0.1
+  title: alex-central-node
+  termsOfService: 'http://swagger.io/terms/'
   license:
-    name: "GPLv2"
-    url: "https://www.gnu.org/licenses/gpl-2.0.en.html"
-
+    name: GPLv2
+    url: 'https://www.gnu.org/licenses/gpl-2.0.en.html'
 servers:
   - url: /api/v1
-    description: "The APIs base path"
-
+    description: The APIs base path
 tags:
-- name: "data-source"
-  description: "Data-Source related APIs"
-
+  - name: data-source
+    description: Data-Source related APIs
 paths:
   /request:
     post:
       tags:
-      - "input"
-      summary: "Intent-input"
-      description: ""
-      operationId: "api.input.intentInput"
+        - input
+      summary: Intent-input
+      description: ''
+      operationId: api.input.intentInput
       requestBody:
-        description: "User intent"
+        description: User intent
         content:
           application/json:
             schema:
               required:
-                - "skill"
-                - "payload"
-                - "user_handle"
-                - "input_service"
+                - skill
+                - payload
+                - user_handle
+                - input_service
               properties:
                 skill:
-                  type: "string"
+                  type: string
                 user_handle:
-                  type: "string"
+                  type: string
                 input_service:
-                  type: "string"
+                  type: string
                 payload:
-                  type: "object"
-
+                  type: object
       responses:
-        200:
-          description: "Success"
-
-  /preferences/user/{userId}:
+        '200':
+          description: Success
+  '/preferences/user/{userId}':
     parameters:
-      - in: "path"
-        name: "userId"
+      - in: path
+        name: userId
         required: true
         schema:
-          $ref: "#/components/schemas/userId"
-        description: "The id of the user"
+          $ref: '#/components/schemas/userId'
+        description: The id of the user
     get:
       tags:
-      - "data-source"
-      summary: "Get user preferences"
-      description: ""
-      operationId: "api.preferences.getUserPreferences"
+        - data-source
+      summary: Get user preferences
+      description: ''
+      operationId: api.preferences.getUserPreferences
       responses:
-        200:
-          description: "Success"
+        '200':
+          description: Success
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/userPreferences"
+                $ref: '#/components/schemas/userPreferences'
     patch:
       tags:
-      - "skill"
-      summary: "Update some user-preferences"
-      description: ""
-      operationId: "api.preferences.patchUserPreferences"
+        - skill
+      summary: Update some user-preferences
+      description: ''
+      operationId: api.preferences.patchUserPreferences
       requestBody:
-        description: "Preferences to update"
+        description: Preferences to update
         content:
           application/json:
             schema:
-              type: "object"
+              type: object
       responses:
-        204:
-          description: "Success"
-
+        '204':
+          description: Success
   /preferences/global:
     get:
       tags:
-      - "data-source"
-      summary: "Get global preferences"
-      description: ""
-      operationId: "api.preferences.getGlobalPreferences"
+        - data-source
+      summary: Get global preferences
+      description: ''
+      operationId: api.preferences.getGlobalPreferences
       responses:
-        200:
-          description: "Success"
+        '200':
+          description: Success
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/globalPreferences"
+                $ref: '#/components/schemas/globalPreferences'
     patch:
       tags:
-      - "skill"
-      summary: "Update some global-preferences"
-      description: ""
-      operationId: "api.preferences.patchGlobalPreferences"
+        - skill
+      summary: Update some global-preferences
+      description: ''
+      operationId: api.preferences.patchGlobalPreferences
       responses:
-        204:
-          description: "Success"
-
+        '204':
+          description: Success
   /monitoring:
     post:
       tags:
-      - "monitoring"
-      summary: "Registers a monitoring entity to the api"
-      description: ""
-      operationId: "api.monitor.registerMonitor"
+        - monitoring
+      summary: Registers a monitoring entity to the api
+      description: ''
+      operationId: api.monitor.registerMonitor
       requestBody:
-        description: "Monitoring entity description"
+        description: Monitoring entity description
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/monitor"
+              $ref: '#/components/schemas/monitor'
       responses:
-        204:
-          description: "Success"
+        '204':
+          description: Success
     get:
       tags:
-      - "monitoring"
-      summary: "Get a list of registred monitoring entities"
-      description: ""
-      operationId: "api.monitor.getMonitor"
+        - monitoring
+      summary: Get a list of registred monitoring entities
+      description: ''
+      operationId: api.monitor.getMonitor
       responses:
-        200:
-          description: 'Array of monitoring entities'
+        '200':
+          description: Array of monitoring entities
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/monitorList"
-
-  /monitoring/{concern}:
+                $ref: '#/components/schemas/monitorList'
+  '/monitoring/{concern}':
     parameters:
-      - in: "path"
-        name: "concern"
+      - in: path
+        name: concern
         required: true
         schema:
-          $ref: "#/components/schemas/concern"
-        description: "The name of a concern"
+          $ref: '#/components/schemas/concern'
+        description: The name of a concern
     post:
       tags:
-      - "monitoring"
-      summary: "Get dynamic information from a monitoring entity"
-      description: ""
-      operationId: "api.monitor.dynamicPull"
+        - monitoring
+      summary: Get dynamic information from a monitoring entity (to be called from skill)
+      description: ''
+      operationId: api.monitor.dynamicPull
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/monitorPayload"
+              $ref: '#/components/schemas/monitorRequestPayload'
       responses:
-        200:
-          description: "Success"
+        '200':
+          description: Success
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/monitorPayload"
-
-  /monitoring/event/{concern}:
+                type: array
+                items:
+                  $ref: '#/components/schemas/monitorResponsePayload'
+  '/monitoring/event/{concern}':
     parameters:
-      - in: "path"
-        name: "concern"
+      - in: path
+        name: concern
         required: true
         schema:
-          $ref: "#/components/schemas/concern"
-        description: "The id of a concern"
+          $ref: '#/components/schemas/concern'
+        description: The id of a concern
     post:
       tags:
-      - "monitoring"
-      summary: "Push dynamic changes to the api"
-      description: ""
-      operationId: "api.monitor.handleEvent"
+        - monitoring
+      summary: Push dynamic changes to the api (to be called from monitoring entity)
+      description: ''
+      operationId: api.monitor.handleEvent
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/monitorPayload"
+              $ref: '#/components/schemas/monitorResponsePayload'
       responses:
-        200:
-          description: "Success"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/monitorPayload"
-
+        '204':
+          description: Success
   /skill:
     post:
       tags:
-      - "skill"
-      summary: "Registers a skill to the api"
-      description: ""
-      operationId: "api.skill.registerSkill"
+        - skill
+      summary: Registers a skill to the api
+      description: ''
+      operationId: api.skill.registerSkill
       requestBody:
-        description: "SKill description"
+        description: SKill description
         content:
           application/json:
             schema:
               required:
-                - "name"
-                - "endpoint"
+                - name
+                - endpoint
+                - interests
               properties:
                 name:
-                  type: "string"
-                  example: "Calendar"
+                  type: string
+                  example: calendar
                 endpoint:
-                  type: "string"
-                  example: "https://calendarapi.service/api/v1"
+                  type: string
+                  example: 'https://calendarapi.service/api/v1'
+                interests:
+                  type: array
+                  items: 
+                    type: string
+                  example:
+                    - "calendar"
+                    - "public_transport"
       responses:
-        204:
-          description: "Success"
+        '204':
+          description: Success
     get:
       tags:
-      - "skill"
-      summary: "Get a list of registred skills"
-      description: ""
-      operationId: "api.skill.getSkills"
+        - skill
+      summary: Get a list of registred skills
+      description: ''
+      operationId: api.skill.getSkills
       responses:
-        200:
-          description: 'Array of skill names'
+        '200':
+          description: Array of skill names
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/skillList"
-
+                $ref: '#/components/schemas/skillList'
 components:
   schemas:
     userId:
-      type: "string"
-      format: "uuid"
-      example: "0693d37c-404a-423c-b802-424341ff087b"
-
+      type: string
+      format: uuid
+      example: 0693d37c-404a-423c-b802-424341ff087b
     userPreferences:
-      type: "object"
-      description: "Object of key-value preferences. Paths nested using dots in keys."
-
+      type: object
+      description: Object of key-value preferences. Paths nested using dots in keys.
     globalPreferences:
-      type: "object"
-      description: "Object of key-value preferences. Paths nested using dots in keys."
-
+      type: object
+      description: Object of key-value preferences. Paths nested using dots in keys.
     skillList:
-      type: "array"
+      type: array
       items:
-        type: "string"
-        example: "RouteCalculator"
-
-    monitorPayload:
+        type: string
+        example: RouteCalculator
+    monitorRequestPayload:
       required:
-       - "type"
-       - "payload"
+        - type
+        - payload
       properties:
         type:
-          type: "string"
-          example: "current_weather"
+          type: string
+          example: current_weather_request
         payload:
-          type: "object"
-
+          type: object
+          example:
+            location: "Stuttgart"
+    monitorResponsePayload:
+      required:
+        - type
+        - payload
+      properties:
+        type:
+          type: string
+          example: current_weather_response
+        payload:
+          type: object
+          example:
+            locations:
+              "Stuttgart":
+                current: "sunny"
     monitorList:
-      type: "array"
+      type: array
       items:
-        type: "string"
-        example: "Calendar"
-
+        type: string
+        example: calendar
     concern:
-      type: "string"
-      format: "weather"
-
+      type: string
+      format: weather
     monitor:
       required:
-        - "concern"
-        - "endpoint"
-        - "types"
+        - concern
+        - endpoint
       properties:
         concern:
-          type: "string"
-          example: "Calendar"
+          type: string
+          example: calendar
         endpoint:
-          type: "string"
-          example: "https://calendarapi.service/api/v1"
-        types:
-          type: 'array'
-          items:
-            type: "string"
-            example: "weather_change"
-
+          type: string
+          example: 'https://calendarapi.service/api/v1'
 externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
