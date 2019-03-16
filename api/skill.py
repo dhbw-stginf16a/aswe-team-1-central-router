@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def registerSkill(body):
-    SKILLS[body['name']] = Skill(body['name'], body['endpoint'])
+    SKILLS[body['name']] = Skill(body['name'], body['endpoint'], body['interests'])
 
     return '', 204
 

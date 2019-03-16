@@ -18,20 +18,25 @@ class Skill:
         self.endpoint = endpoint.rstrip("/")
         self.interests = interests
 
-    def requestData(self, payload: dict, user: str) -> dict:
+    def requestData(self, etype: str, payload: dict, user_handle: str, input_service: str) -> dict:
         """Allows to query the service with the data
         given by the intent detector
 
         Arguments:
-            payload {dict} -- [description]
-            user {str} -- [description]
 
         Returns:
             dict -- [description]
         """
-        # Do some requests magic here and return the response
-        logger.debug(self.endpoint)
-        return {}
+        user = "{}#{}".format(user_handle, input_service)
+        r = requests.post("{}{}".format(self.endpoint, "/request"), json = {
+            "type": etype,
+            "payload": payload,
+            "user": user
+        })
+        assert r.status_code == 200
+        json_r = r.json()
+        assert type(json_r) == dict
+        return json_r
 
     def getInterests(self):
         return self.interests

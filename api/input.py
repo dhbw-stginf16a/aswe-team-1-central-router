@@ -10,7 +10,5 @@ logger = logging.getLogger(__name__)
 def intentInput(body):
     skill = SKILLS[body['skill']]
 
-    # TODO: Do some handle<->user mapping here
-    user = body['user_handle']
-    response = skill.requestData(body['payload'], user)
+    response = skill.requestData(body['type'], body['payload'], body['user_handle'], body['input_service'])
     return response, 200

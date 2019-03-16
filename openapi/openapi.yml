@@ -28,11 +28,14 @@ paths:
             schema:
               required:
                 - skill
+                - type
                 - payload
                 - user_handle
                 - input_service
               properties:
                 skill:
+                  type: string
+                type:
                   type: string
                 user_handle:
                   type: string
