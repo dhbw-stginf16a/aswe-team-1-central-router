@@ -9,8 +9,9 @@ class TestSkill(TestConnexion):
     """
     def test_registerSkill(self, client):
         skill = {
-            'name': 'Calendar',
-            'endpoint': 'https://calendar.skills.service/api/v1/'
+            'name': 'CalendarMonitor',
+            'endpoint': 'https://calendar.skills.service/api/v1/',
+            'interests': ['events_today']
         }
         response = client.post('/api/v1/skill', json=skill)
 
@@ -20,4 +21,4 @@ class TestSkill(TestConnexion):
         response = client.get('/api/v1/skill')
 
         assert response.status_code == 200
-        assert response.get_json() == ['Calendar']
+        assert response.get_json() == ['CalendarMonitor']
