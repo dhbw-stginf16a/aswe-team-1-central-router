@@ -2,7 +2,9 @@ FROM python:3.6-alpine
 
 LABEL maintainer="Thore Kruess"
 
-RUN adduser -D flask && pip install pipenv && pip install gevent
+RUN adduser -D flask && pip install pipenv
+RUN apk add --update --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main py-gevent
+
 
 WORKDIR /app
 
