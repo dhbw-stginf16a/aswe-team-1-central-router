@@ -67,6 +67,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/userPreferences'
+    delete:
+      tags:
+        - data-source
+      summary: Reset user preferences
+      description: ''
+      operationId: api.preferences.resetUserPreferences
+      responses:
+        '204':
+          description: Success
     patch:
       tags:
         - skill

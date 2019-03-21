@@ -37,6 +37,10 @@ class PreferenceStore:
         logger.info("Syncing PreferenceStore to disk...")
         self.store.sync()
 
+    def reset_scope(self, scope):
+        self.ensure_scope(scope)
+        self.store[str(scope)] = dict()
+
 class ScopedPreferenceStore:
     def __init__(self, store, scope):
         self.store = store
@@ -54,6 +58,9 @@ class ScopedPreferenceStore:
     def sync(self):
         self.store.sync()
 
+    def reset(self):
+        self.store.reset_scope(self.scope)
+
 
 preferenceStore = PreferenceStore(os.environ["PREFSTORE_LOCATION"])
 globalPreferenceStore = ScopedPreferenceStore(preferenceStore, "global")
@@ -70,6 +77,9 @@ def patchUserPreferences(userId, body):
     prefStore = userPreferenceStore(userId)
     for key in body:
         prefStore.update(key, body[key])
+
+def resetUserPreferences(userId):
+    userPreferenceStore(userId).reset()
 
 def getGlobalPreferences():
     return globalPreferenceStore.get_all()
