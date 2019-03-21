@@ -17,8 +17,12 @@ class PreferenceStore:
 
     def update(self, scope, key, value):
         self.ensure_scope(scope)
+
         temp = self.store[str(scope)]
-        temp[str(key)] = str(value)
+        if value is not None:
+            temp[str(key)] = str(value)
+        else:
+            temp.pop(str(key), None) # Return None if it didn't exist to prevent an exception
         self.store[str(scope)] = temp
 
     def get(self, scope, key):
@@ -51,7 +55,7 @@ class ScopedPreferenceStore:
         self.store.sync()
 
 
-preferenceStore = PreferenceStore(os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "infostore.something"))
+preferenceStore = PreferenceStore(os.environ["PREFSTORE_LOCATION"])
 globalPreferenceStore = ScopedPreferenceStore(preferenceStore, "global")
 
 # Return a scoped preference store for the specific user id
