@@ -2,7 +2,7 @@ FROM python:3.6-alpine
 
 LABEL maintainer="Thore Kruess"
 
-RUN adduser -D flask && pip install pipenv
+RUN adduser -D flask && pip install pipenv && pip install gevent
 
 WORKDIR /app
 
@@ -14,4 +14,4 @@ USER flask
 
 EXPOSE 8080
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "-w", "8", "app:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "-k", "gevent", "--worker-connections", "1000", "app:application"]
