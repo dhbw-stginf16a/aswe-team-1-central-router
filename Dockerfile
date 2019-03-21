@@ -14,4 +14,4 @@ USER flask
 
 EXPOSE 8080
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "-w", "8", "app:application"]
