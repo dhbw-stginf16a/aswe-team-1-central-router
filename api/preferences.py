@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 class PreferenceStore:
     def __init__(self, path):
-        self.store = shelve.open(path)
+        self.store = shelve.open(path, "c")
         atexit.register(self.sync)
 
     def ensure_scope(self, scope):
