@@ -14,3 +14,6 @@ def registerSkill(body):
 
 def getSkills():
     return list(SKILLS.keys()), 200
+
+def proactive(body):
+    pass
