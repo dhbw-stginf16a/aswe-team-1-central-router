@@ -27,10 +27,11 @@ class MonitoringEntity:
     def requestIfConcern(self, concern, rtype, payload):
         if self.concern == concern:
             print("Do Request")
-            return self.request(rtype, payload)
+            resps, status_code = self.request(rtype, payload)
+            return resps, status_code
         else:
             print("Not matching")
-            return []
+            return [], 404
 
 class MonitoringEntityManager:
     def __init__(self):
