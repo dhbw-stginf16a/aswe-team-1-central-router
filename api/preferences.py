@@ -77,9 +77,11 @@ def patchUserPreferences(userId, body):
     prefStore = userPreferenceStore(userId)
     for key in body:
         prefStore.update(key, body[key])
+    return "", 204
 
 def resetUserPreferences(userId):
     userPreferenceStore(userId).reset()
+    return "", 204
 
 def getGlobalPreferences():
     return globalPreferenceStore.get_all()
@@ -87,3 +89,4 @@ def getGlobalPreferences():
 def patchGlobalPreferences(body):
     for key in body:
         globalPreferenceStore.update(key, body[key])
+    return "", 204
