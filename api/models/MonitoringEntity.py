@@ -45,7 +45,8 @@ class MonitoringEntityManager:
         return_code = 200
         for monent in self.monents:
             resps, status_code = monent.requestIfConcern(concern, rtype, payload)
-            return_code = max(return_code, status_code)
+            if status_code >= 500:
+                return_code = max(return_code, status_code)
             for resp in resps:
                 responses.append(resp)
 
