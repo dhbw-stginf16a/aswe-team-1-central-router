@@ -19,7 +19,7 @@ class MonitoringEntity:
 
     def request(self, rtype, payload):
         r = requests.post("{}{}".format(self.endpoint, "/request"), json = { "type": rtype, "payload": payload })
-        assert r.status_code == 200
+        # assert r.status_code == 200
         json_resp = r.json()
         assert type(json_resp) == list
         return json_resp
