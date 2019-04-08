@@ -71,16 +71,16 @@ def userPreferenceStore(user_id):
 
 
 def getUserPreferences(userId):
-    return userPreferenceStore(userId).get_all()
+    return userPreferenceStore(userId.replace('#matrix','')).get_all()
 
 def patchUserPreferences(userId, body):
-    prefStore = userPreferenceStore(userId)
+    prefStore = userPreferenceStore(userId.replace('#matrix',''))
     for key in body:
         prefStore.update(key, body[key])
     return "", 204
 
 def resetUserPreferences(userId):
-    userPreferenceStore(userId).reset()
+    userPreferenceStore(userId.replace('#matrix','')).reset()
     return "", 204
 
 def getGlobalPreferences():
